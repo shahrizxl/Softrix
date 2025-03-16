@@ -6,8 +6,8 @@ import 'package:Tradezy/pages/money.dart';
 import 'package:Tradezy/pages/com.dart';
 import 'package:Tradezy/pages/trad.dart';
 import 'package:Tradezy/pages/profile.dart';
-import 'package:Tradezy/pages/news.dart'; // Import Newspage
-import 'package:Tradezy/pages/notes.dart'; // Import Newspage
+import 'package:Tradezy/pages/news.dart'; 
+import 'package:Tradezy/pages/notes.dart'; 
 
 
 
@@ -20,12 +20,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final supabase = Supabase.instance.client;
-  String userName = "User"; // Default value
+  String userName = "User"; 
   String userGender = "male";
-  double? _totalMoney; // Income - Expenses
+  double? _totalMoney; 
   bool _isLoading = true;
   String? _errorMessage;
-  bool _hasNotes = false; // To track if the user has notes
+  bool _hasNotes = false; 
 
   final List<Map<String, String>> images = [
     {"url": "images/barcamp.png", "link": "https://www.instagram.com/barcamp_cyberjaya/"},
@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
     super.initState();
     fetchUserName();
     fetchTotalMoney();
-    fetchNotesStatus(); // Fetch notes status on init
+    fetchNotesStatus(); 
   }
 
   Future<void> fetchUserName() async {
@@ -80,7 +80,6 @@ class _HomeState extends State<Home> {
         throw Exception('You must be logged in to fetch money data.');
       }
 
-      // Fetch total income from 'incomes' table
       final incomeResponse = await supabase
           .from('incomes')
           .select('amount')
@@ -89,7 +88,6 @@ class _HomeState extends State<Home> {
           .map((item) => (item['amount'] as num).toDouble())
           .toList();
 
-      // Fetch transactions (Income and Expense)
       final transactionResponse = await supabase
           .from('transactions')
           .select('amount, type')
@@ -292,7 +290,6 @@ class _HomeState extends State<Home> {
               ),
             ),
             const SizedBox(height: 30),
-            // Three vertical boxes for Money, News, Notes
             Expanded(
               child: Column(
                 children: [

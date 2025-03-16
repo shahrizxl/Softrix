@@ -24,7 +24,6 @@ class _FeedState extends State<Feed> {
   Future<void> _fetchPosts() async {
     setState(() => _isLoading = true);
     try {
-      // Fetch all posts
       final postResponse = await supabase
           .from('posts')
           .select('id, user_id, content, created_at')
@@ -32,10 +31,8 @@ class _FeedState extends State<Feed> {
 
       final posts = postResponse as List<Map<String, dynamic>>;
 
-      // Collect all user_ids
       final userIds = posts.map((post) => post['user_id'] as String).toSet().toList();
 
-      // Fetch all profiles for these user_ids in one query
       final profileResponse = await supabase
           .from('profiles')
           .select('id, name, institution')
@@ -45,7 +42,6 @@ class _FeedState extends State<Feed> {
           .asMap()
           .map((_, profile) => MapEntry(profile['id'], profile));
 
-      // Map profiles to posts
       for (var post in posts) {
         final profile = profiles[post['user_id']];
         if (profile == null) {
@@ -84,7 +80,6 @@ class _FeedState extends State<Feed> {
         return;
       }
 
-      // Check if the user has a profile; if not, create a default one
       final profileResponse = await supabase
           .from('profiles')
           .select('id')
@@ -128,17 +123,17 @@ class _FeedState extends State<Feed> {
   @override
 Widget build(BuildContext context) {
   return Scaffold(
-    backgroundColor: Colors.grey[900], // Dark background for the entire screen
+    backgroundColor: Colors.grey[900], 
     appBar: AppBar(
       centerTitle: true,
       title: const Text('Traders chat', style: TextStyle(color: Colors.white)),
-      backgroundColor: Colors.grey[900], // Dark background for AppBar
-      elevation: 0, // Removes the shadow
-      iconTheme: const IconThemeData(color: Colors.white), // White icons
+      backgroundColor: Colors.grey[900], 
+      elevation: 0, 
+      iconTheme: const IconThemeData(color: Colors.white), 
       actions: [
         IconButton(
           icon: const Icon(Icons.refresh),
-          onPressed: _fetchPosts, // Refresh posts when pressed
+          onPressed: _fetchPosts, 
         ),
       ],
     ),
@@ -156,7 +151,7 @@ Widget build(BuildContext context) {
                   hintText: 'Share your thoughts...',
                   hintStyle: const TextStyle(color: Colors.grey),
                   filled: true,
-                  fillColor: Colors.grey[800], // Slightly lighter dark for input
+                  fillColor: Colors.grey[800], 
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -195,7 +190,7 @@ Widget build(BuildContext context) {
                         final formattedDate = DateFormat('MMM d, yyyy • HH:mm').format(createdAt);
 
                         return Card(
-                          color: Colors.grey[850], // Darker card background
+                          color: Colors.grey[850], 
                           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),

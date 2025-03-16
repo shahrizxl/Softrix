@@ -340,13 +340,13 @@ class _LearnPageState extends State<LearnPage> {
                               ),
                             )
                           : Container(
-                              height: 400, // Increased height for more space
+                              height: 400,
                               child: LineChart(
                                 LineChartData(
                                   gridData: FlGridData(
                                     show: true,
                                     drawVerticalLine: false,
-                                    horizontalInterval: _getFixedYInterval(selectedAsset), // Use fixed interval
+                                    horizontalInterval: _getFixedYInterval(selectedAsset), 
                                     getDrawingHorizontalLine: (value) {
                                       return FlLine(
                                         color: Colors.white24,
@@ -360,7 +360,7 @@ class _LearnPageState extends State<LearnPage> {
                                       sideTitles: SideTitles(
                                         showTitles: true,
                                         reservedSize: 60,
-                                        interval: _getFixedYInterval(selectedAsset), // Use fixed interval
+                                        interval: _getFixedYInterval(selectedAsset), 
                                         getTitlesWidget: (value, meta) {
                                           return Padding(
                                             padding: const EdgeInsets.only(right: 8.0),
@@ -405,8 +405,8 @@ class _LearnPageState extends State<LearnPage> {
                                       belowBarData: BarAreaData(show: false),
                                     ),
                                   ],
-                                  minY: _getMinY(selectedAsset) != null ? _getMinY(selectedAsset)! * 0.7 : null, // More padding
-                                  maxY: _getMaxY(selectedAsset) != null ? _getMaxY(selectedAsset)! * 1.3 : null, // More padding
+                                  minY: _getMinY(selectedAsset) != null ? _getMinY(selectedAsset)! * 0.7 : null, 
+                                  maxY: _getMaxY(selectedAsset) != null ? _getMaxY(selectedAsset)! * 1.3 : null, 
                                 ),
                               ),
                             ),
@@ -470,20 +470,19 @@ class _LearnPageState extends State<LearnPage> {
   }
 
   double _getFixedYInterval(String asset) {
-    // Fixed intervals based on asset type to ensure readability
     switch (asset) {
       case 'Bitcoin':
-        return 50000.0; // Large interval for Bitcoin's high range
+        return 50000.0; 
       case 'Gold':
-        return 10000.0; // Reasonable interval for Gold
+        return 10000.0; 
       case 'Tesla':
-        return 5000.0; // Reasonable interval for Tesla
+        return 5000.0; 
       case 'Apple':
-        return 5000.0; // Reasonable interval for Apple
+        return 5000.0; 
       case 'Maybank':
-        return 2.0; // Small interval for Maybank
+        return 2.0; 
       default:
-        return 10000.0; // Default interval
+        return 10000.0; 
     }
   }
 
@@ -501,11 +500,11 @@ class _LearnPageState extends State<LearnPage> {
 
   String _formatPrice(double value, String asset) {
     if (value >= 1000) {
-      return '${(value / 1000).toStringAsFixed(0)}k'; // Whole numbers for large values
+      return '${(value / 1000).toStringAsFixed(0)}k';
     } else if (asset == 'Maybank') {
       return value.toStringAsFixed(2);
     } else {
-      return value.toStringAsFixed(0); // Whole numbers
+      return value.toStringAsFixed(0); 
     }
   }
 }

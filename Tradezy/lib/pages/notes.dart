@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:Tradezy/pages/com.dart'; // Import EduPage for navigation back
+import 'package:Tradezy/pages/com.dart'; 
 import 'package:Tradezy/pages/bottomnav.dart';
-import 'package:intl/intl.dart'; // Added for date formatting
+import 'package:intl/intl.dart'; 
 
 class NotesPage extends StatefulWidget {
   const NotesPage({super.key});
@@ -18,9 +18,8 @@ class _NotesPageState extends State<NotesPage> {
   String? _errorMessage;
   List<Map<String, dynamic>> _notes = [];
 
-  // Controllers for input fields
   final _noteController = TextEditingController();
-  DateTime? _selectedDate; // Store selected date
+  DateTime? _selectedDate;
 
   @override
   void initState() {

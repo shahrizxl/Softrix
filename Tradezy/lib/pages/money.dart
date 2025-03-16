@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart'; // For graphs
+import 'package:fl_chart/fl_chart.dart'; 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,7 +23,7 @@ class _FinanceAppState extends State<FinanceApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(), // Dark mode
+      theme: ThemeData.dark(),
       home: Scaffold(
         body: _screens[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
@@ -158,7 +158,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
               : Column(
                   children: [
-                    // Category filter dropdown
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: DropdownButtonFormField<String>(
@@ -181,7 +180,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    // Summary Card
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Card(
@@ -231,7 +229,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    // Transaction List
                     Expanded(
                       child: _filteredTransactions.isEmpty
                           ? const Center(
@@ -272,8 +269,8 @@ class AddTransactionScreen extends StatefulWidget {
 class _AddTransactionScreenState extends State<AddTransactionScreen> {
   final _formKey = GlobalKey<FormState>();
   final _amountController = TextEditingController();
-  String _transactionType = 'Expense'; // Default type
-  String _selectedPurpose = 'Food and Drink'; // Default purpose
+  String _transactionType = 'Expense'; 
+  String _selectedPurpose = 'Food and Drink'; 
 
   final List<String> _purposes = [
     'Food and Drink',
@@ -286,12 +283,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     'Tuition Fee'
   ];
 
-  // Supabase client (assuming it's initialized globally)
   final supabase = Supabase.instance.client;
 
   Future<void> _saveTransaction() async {
     if (!_formKey.currentState!.validate()) {
-      return; // Stop if form validation fails
+      return; 
     }
 
     try {
@@ -300,7 +296,6 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
         throw Exception('You must be logged in to add a transaction.');
       }
 
-      // Insert transaction into Supabase
       await supabase.from('transactions').insert({
         'user_id': user.id,
         'type': _transactionType,
@@ -462,7 +457,7 @@ class _StatsScreenState extends State<StatsScreen> {
   @override
   Widget build(BuildContext context) {
     final allMonths = {..._incomeByMonth.keys, ..._expenseByMonth.keys}.toList()
-      ..sort((a, b) => b.compareTo(a)); // Sort descending
+      ..sort((a, b) => b.compareTo(a)); 
 
     return Scaffold(
       appBar: AppBar(
@@ -597,9 +592,9 @@ class SavingsScreen extends StatefulWidget {
 class _SavingsScreenState extends State<SavingsScreen> {
   final supabase = Supabase.instance.client;
   double? _totalIncome;
-  double? _needs; // 50% of total income
-  double? _wants; // 30% of total income
-  double? _savings; // 20% of total income
+  double? _needs; 
+  double? _wants;
+  double? _savings; 
   bool _isLoading = true;
   String? _errorMessage;
 
@@ -616,7 +611,6 @@ class _SavingsScreenState extends State<SavingsScreen> {
         throw Exception('You must be logged in to view savings suggestions.');
       }
 
-      // Fetch total income from 'incomes' table
       final incomeResponse = await supabase
           .from('incomes')
           .select('amount')
@@ -639,9 +633,9 @@ class _SavingsScreenState extends State<SavingsScreen> {
 
       setState(() {
         _totalIncome = totalIncome;
-        _needs = totalIncome * 0.5; // 50% for Needs
-        _wants = totalIncome * 0.3; // 30% for Wants
-        _savings = totalIncome * 0.2; // 20% for Savings
+        _needs = totalIncome * 0.5; 
+        _wants = totalIncome * 0.3; 
+        _savings = totalIncome * 0.2; 
         _isLoading = false;
         final allocations = _calculateAllocations(_savings!);
         allocations.forEach((key, value) {
@@ -766,7 +760,6 @@ class _SavingsScreenState extends State<SavingsScreen> {
                       ..._calculateAllocations(_savings!).entries.map((entry) {
                         final platformKey = entry.key.split(' ')[0];
                         if (platformKey == 'Keep') {
-                          // Special case for "Keep in Cash"
                           return Card(
                             elevation: 2,
                             margin: const EdgeInsets.symmetric(vertical: 8),
@@ -796,7 +789,6 @@ class _SavingsScreenState extends State<SavingsScreen> {
                             ),
                           );
                         } else {
-                          // Regular platform with image and link
                           final platform = _platforms[platformKey]!;
                           return Card(
                             elevation: 2,
