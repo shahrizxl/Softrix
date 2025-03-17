@@ -6,10 +6,8 @@ import 'package:Tradezy/pages/money.dart';
 import 'package:Tradezy/pages/com.dart';
 import 'package:Tradezy/pages/trad.dart';
 import 'package:Tradezy/pages/profile.dart';
-import 'package:Tradezy/pages/news.dart'; 
-import 'package:Tradezy/pages/notes.dart'; 
-
-
+import 'package:Tradezy/pages/news.dart';
+import 'package:Tradezy/pages/notes.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -28,9 +26,9 @@ class _HomeState extends State<Home> {
   bool _hasNotes = false; 
 
   final List<Map<String, String>> images = [
-    {"url": "images/barcamp.png", "link": "https://www.instagram.com/barcamp_cyberjaya/"},
-    {"url": "images/umhack.jpeg", "link": "https://www.instagram.com/umhackathon/"},
-    {"url": "images/usmhack.jpeg", "link": "https://www.instagram.com/vhack.usm/"},
+    {"url": "images/2.png", "link": "/"},
+    {"url": "images/4.PNG", "link": "/"},
+    {"url": "images/5.PNG", "link": "/"},
   ];
 
   Future<void> _launchURL(String url) async {
@@ -142,10 +140,21 @@ class _HomeState extends State<Home> {
     return _totalMoney! > 100 ? "Above RM 100" : "Below RM 100";
   }
 
-
   String _getNotesCondition() {
     if (_isLoading) return "Loading...";
     return _hasNotes ? "Notes Available" : "No Notes";
+  }
+
+  String _getDailyMotivation() {
+    final List<String> motivations = [
+      "Keep pushing forward!",
+      "You are stronger than you think.",
+      "Every day is a new opportunity.",
+      "Believe in yourself and all that you are.",
+      "Success is built one step at a time.",
+    ];
+    final random = DateTime.now().day % motivations.length; 
+    return motivations[random];
   }
 
   @override
@@ -308,7 +317,7 @@ class _HomeState extends State<Home> {
                   _buildConditionBox(
                     "News",
                     "View Latest Updates",
-                    Colors.orangeAccent,
+                    Colors.blue,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -320,12 +329,23 @@ class _HomeState extends State<Home> {
                   _buildConditionBox(
                     "Notes",
                     _getNotesCondition(),
-                    Colors.purpleAccent,
+                    Colors.blue,
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const NotesPage()),
                       );
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  _buildConditionBox(
+                    "Daily Motivation",
+                    _getDailyMotivation(),
+                    Colors.blue,
+                    onTap: () {
+                      setState(() {
+                        // Refresh the motivational message on tap
+                      });
                     },
                   ),
                 ],
@@ -357,7 +377,11 @@ class _HomeState extends State<Home> {
             Text(
               condition,
               style: TextStyle(
-                color: condition.contains("Above")||condition.contains("Available") ? Colors.green : condition.contains("Below") ||condition.contains("No")? Colors.red : Colors.white,
+                color: condition.contains("Above") || condition.contains("Available") 
+                    ? Colors.green 
+                    : condition.contains("Below") || condition.contains("No") 
+                        ? Colors.red 
+                        : Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),

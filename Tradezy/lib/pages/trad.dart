@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:Tradezy/pages/portfolio.dart'; 
 import 'package:url_launcher/url_launcher.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'; 
+import 'dart:ui'; // For BackdropFilter
 
 class LearnPage extends StatefulWidget {
   const LearnPage({super.key});
@@ -500,7 +501,7 @@ class _LearnPageState extends State<LearnPage> {
 
   String _formatPrice(double value, String asset) {
     if (value >= 1000) {
-      return '${(value / 1000).toStringAsFixed(0)}k';
+      return '${(value / 1000).toStringAsFixed(0)}k'; 
     } else if (asset == 'Maybank') {
       return value.toStringAsFixed(2);
     } else {
@@ -508,6 +509,8 @@ class _LearnPageState extends State<LearnPage> {
     }
   }
 }
+
+
 class HowTradingWorksPage extends StatelessWidget {
   const HowTradingWorksPage({super.key});
 
@@ -643,6 +646,9 @@ class HowTradingWorksPage extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 20),
+          // Quiz Section
+          const TradingQuizSection(),
         ],
       ),
     );
@@ -687,6 +693,255 @@ class HowTradingWorksPage extends StatelessWidget {
   }
 }
 
+class TradingQuizSection extends StatefulWidget {
+  const TradingQuizSection({super.key});
+
+  @override
+  State<TradingQuizSection> createState() => _TradingQuizSectionState();
+}
+
+class _TradingQuizSectionState extends State<TradingQuizSection> {
+  final List<Map<String, dynamic>> quizQuestions = [
+    {
+      'question': 'What does it mean to "go long" in trading?',
+      'options': [
+        'A) Selling an asset to profit from a price drop',
+        'B) Buying an asset expecting its price to rise',
+        'C) Holding an asset for a short period',
+        'D) Using leverage to amplify losses'
+      ],
+      'correctAnswer': 1,
+    },
+    {
+      'question': 'What is the purpose of a stop-loss order?',
+      'options': [
+        'A) To automatically buy an asset at a lower price',
+        'B) To limit potential losses by selling an asset at a predetermined price',
+        'C) To increase leverage on a position',
+        'D) To analyze price charts'
+      ],
+      'correctAnswer': 1,
+    },
+    {
+      'question': 'What does leverage allow traders to do?',
+      'options': [
+        'A) Trade without any risk',
+        'B) Borrow funds to increase the size of their position',
+        'C) Avoid paying taxes on profits',
+        'D) Automatically close losing trades'
+      ],
+      'correctAnswer': 1,
+    },
+    {
+      'question': 'What is technical analysis primarily based on?',
+      'options': [
+        'A) Economic data and company earnings',
+        'B) Price charts and trading indicators',
+        'C) News headlines and rumors',
+        'D) Government policies'
+      ],
+      'correctAnswer': 1,
+    },
+    {
+      'question': 'What should you do first before starting to trade with real money?',
+      'options': [
+        'A) Practice with a demo account',
+        'B) Invest all your savings',
+        'C) Use maximum leverage',
+        'D) Ignore risk management'
+      ],
+      'correctAnswer': 0,
+    },
+  ];
+
+  List<int?> userAnswers = List.filled(5, null); // Track user's selected answers
+  bool isSubmitted = false;
+  int score = 0;
+
+  void _submitQuiz() {
+    setState(() {
+      isSubmitted = true;
+      score = 0;
+      for (int i = 0; i < quizQuestions.length; i++) {
+        if (userAnswers[i] == quizQuestions[i]['correctAnswer']) {
+          score++;
+        }
+      }
+    });
+  }
+
+  void _resetQuiz() {
+    setState(() {
+      userAnswers = List.filled(5, null);
+      isSubmitted = false;
+      score = 0;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+        side: const BorderSide(color: Colors.white, width: 1.0),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12.0),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  children: [
+                    Icon(Icons.quiz, color: Colors.white, size: 24),
+                    SizedBox(width: 8),
+                    Text(
+                      'Test Your Knowledge',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Answer the following questions to test your understanding of trading basics:',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                const SizedBox(height: 20),
+                ...List.generate(quizQuestions.length, (index) {
+                  return _buildQuizQuestion(index);
+                }),
+                const SizedBox(height: 20),
+                if (isSubmitted)
+                  Column(
+                    children: [
+                      Text(
+                        'Your Score: $score/${quizQuestions.length}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: _resetQuiz,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueAccent,
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text(
+                          'Try Again',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                else
+                  ElevatedButton(
+                    onPressed: _submitQuiz,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Check Answers',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuizQuestion(int index) {
+    final question = quizQuestions[index];
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Question ${index + 1}: ${question['question']}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ...List.generate(question['options'].length, (optionIndex) {
+            return RadioListTile<int>(
+              value: optionIndex,
+              groupValue: userAnswers[index],
+              onChanged: isSubmitted
+                  ? null
+                  : (value) {
+                      setState(() {
+                        userAnswers[index] = value;
+                      });
+                    },
+              title: Text(
+                question['options'][optionIndex],
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              activeColor: Colors.blueAccent,
+              tileColor: isSubmitted
+                  ? (optionIndex == question['correctAnswer']
+                      ? Colors.green.withOpacity(0.2)
+                      : userAnswers[index] == optionIndex
+                          ? Colors.red.withOpacity(0.2)
+                          : null)
+                  : null,
+            );
+          }),
+          if (isSubmitted)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                userAnswers[index] == question['correctAnswer']
+                    ? 'Correct! ✅'
+                    : 'Incorrect. The correct answer is: ${question['options'][question['correctAnswer']]} ❌',
+                style: TextStyle(
+                  color: userAnswers[index] == question['correctAnswer'] ? Colors.green : Colors.red,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
 class BestTradingPlatformsPage extends StatefulWidget {
   const BestTradingPlatformsPage({super.key});
 

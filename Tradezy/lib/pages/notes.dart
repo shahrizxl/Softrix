@@ -19,7 +19,7 @@ class _NotesPageState extends State<NotesPage> {
   List<Map<String, dynamic>> _notes = [];
 
   final _noteController = TextEditingController();
-  DateTime? _selectedDate;
+  DateTime? _selectedDate; 
 
   @override
   void initState() {

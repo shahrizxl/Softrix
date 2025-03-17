@@ -23,7 +23,7 @@ class _FinanceAppState extends State<FinanceApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: ThemeData.dark(), 
       home: Scaffold(
         body: _screens[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
@@ -33,7 +33,7 @@ class _FinanceAppState extends State<FinanceApp> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.account_balance), label: 'Bank'),
+            BottomNavigationBarItem(icon: Icon(Icons.account_balance), label: 'Summary'),
             BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
             BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Stats'),
             BottomNavigationBarItem(icon: Icon(Icons.trending_up), label: 'Invest'),
@@ -593,7 +593,7 @@ class _SavingsScreenState extends State<SavingsScreen> {
   final supabase = Supabase.instance.client;
   double? _totalIncome;
   double? _needs; 
-  double? _wants;
+  double? _wants; 
   double? _savings; 
   bool _isLoading = true;
   String? _errorMessage;

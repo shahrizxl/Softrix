@@ -1,4 +1,4 @@
-# Tradezy
+# tradezy
 
 A new Flutter project.
 

@@ -129,7 +129,7 @@ Widget build(BuildContext context) {
       title: const Text('Traders chat', style: TextStyle(color: Colors.white)),
       backgroundColor: Colors.grey[900], 
       elevation: 0, 
-      iconTheme: const IconThemeData(color: Colors.white), 
+      iconTheme: const IconThemeData(color: Colors.white),
       actions: [
         IconButton(
           icon: const Icon(Icons.refresh),

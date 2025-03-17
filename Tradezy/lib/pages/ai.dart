@@ -15,15 +15,12 @@ class _AiState extends State<Ai> {
   final currentUser = ChatUser(id: "0", firstName: "User");
   final geminiUser = ChatUser(id: "1", firstName: "Tradezy AI");
 
-  // Helper function to format the AI response
   String formatAIResponse(String response) {
-    // Replace Markdown bold (**text**) with plain text bold (e.g., "Set SMART goals:")
     response = response.replaceAllMapped(
       RegExp(r'\*\*(.*?)\*\*'),
-      (match) => '${match[1]}:', // Add a colon to make it look like a heading
+      (match) => '${match[1]}:', 
     );
 
-    // Replace bullet points (* text) with a dash and newline for better readability
     response = response.replaceAllMapped(
       RegExp(r'\* (.*?)(?:\n|$)'),
       (match) => '- ${match[1]}\n',
@@ -67,7 +64,6 @@ class _AiState extends State<Ai> {
     );
   }
 
-  // Custom message decoration builder to style the message container
   BoxDecoration messageDecorationBuilder(ChatMessage message, ChatMessage? previousMessage, ChatMessage? nextMessage) {
     return BoxDecoration(
       color: message.user == currentUser ? Colors.blueAccent : Colors.grey[800],
@@ -95,8 +91,8 @@ class _AiState extends State<Ai> {
         messageOptions: MessageOptions(
           showTime: true,
           timeTextColor: Colors.grey,
-          messageTextBuilder: textBuilder, // Use textBuilder to customize text rendering
-          messageDecorationBuilder: messageDecorationBuilder, // Use messageDecorationBuilder for container styling
+          messageTextBuilder: textBuilder, 
+          messageDecorationBuilder: messageDecorationBuilder,
         ),
         inputOptions: InputOptions(
           inputDecoration: InputDecoration(

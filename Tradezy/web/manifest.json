@@ -1,6 +1,6 @@
 {
-    "name": "Tradezy",
-    "short_name": "Tradezy",
+    "name": "tradezy",
+    "short_name": "tradezy",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
