@@ -18,23 +18,25 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final supabase = Supabase.instance.client;
-  String userName = "User"; 
+  String userName = "User";
   String userGender = "male";
-  double? _totalMoney; 
+  double? _totalMoney;
   bool _isLoading = true;
   String? _errorMessage;
-  bool _hasNotes = false; 
+  bool _hasNotes = false;
 
   final List<Map<String, String>> images = [
-    {"url": "images/2.png", "link": "/"},
-    {"url": "images/4.PNG", "link": "/"},
+    {"url": "images/2.PNG", "link": "/"},
+    {"url": "images/4.png", "link": "/"},
     {"url": "images/5.PNG", "link": "/"},
   ];
 
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw 'Could not launch $url';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not launch $url')),
+      );
     }
   }
 
@@ -47,7 +49,7 @@ class _HomeState extends State<Home> {
     super.initState();
     fetchUserName();
     fetchTotalMoney();
-    fetchNotesStatus(); 
+    fetchNotesStatus();
   }
 
   Future<void> fetchUserName() async {
@@ -68,6 +70,9 @@ class _HomeState extends State<Home> {
         });
       }
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to fetch user data')),
+      );
     }
   }
 
@@ -109,6 +114,9 @@ class _HomeState extends State<Home> {
         _errorMessage = 'Failed to fetch money data: $error';
         _isLoading = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_errorMessage!)),
+      );
     }
   }
 
@@ -132,6 +140,9 @@ class _HomeState extends State<Home> {
       setState(() {
         _errorMessage = 'Failed to fetch notes status: $error';
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_errorMessage!)),
+      );
     }
   }
 
@@ -153,202 +164,271 @@ class _HomeState extends State<Home> {
       "Believe in yourself and all that you are.",
       "Success is built one step at a time.",
     ];
-    final random = DateTime.now().day % motivations.length; 
+    final random = DateTime.now().day % motivations.length;
     return motivations[random];
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
-        margin: const EdgeInsets.only(top: 30, left: 20, right: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  "images/wave.png",
-                  width: 40,
-                  height: 40,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  "Hello, $userName",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Spacer(),
-                PopupMenuButton<String>(
-                  onSelected: (value) {
-                    if (value == 'logout') {
-                      _handleLogout();
-                    } else if (value == 'profile') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Profile()),
-                      );
-                    }
-                  },
-                  itemBuilder: (BuildContext context) => [
-                    const PopupMenuItem<String>(
-                      value: 'profile',
-                      child: Row(
-                        children: [
-                          Icon(Icons.person, color: Colors.blueAccent),
-                          SizedBox(width: 8),
-                          Text('Profile'),
-                        ],
-                      ),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'logout',
-                      child: Row(
-                        children: [
-                          Icon(Icons.logout, color: Colors.red),
-                          SizedBox(width: 8),
-                          Text('Logout'),
-                        ],
-                      ),
-                    ),
-                  ],
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Profile()),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.blueAccent, width: 2.0),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: Image.asset(
-                          userGender.toLowerCase() == "female" ? "images/female.png" : "images/male.png",
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                _buildHeader(context, screenWidth),
+                const SizedBox(height: 16),
+                _buildWelcomeText(),
+                const SizedBox(height: 16),
+                _buildCarousel(screenWidth, screenHeight),
+                const SizedBox(height: 24),
+                _buildConditionBoxes(context),
+                const SizedBox(height: 24),
+                _buildDailyMotivationSection(),
               ],
             ),
-            const SizedBox(height: 10),
-            const Text(
-              "Welcome to,",
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.grey[900],
+        selectedItemColor: Colors.blueAccent,
+        unselectedItemColor: Colors.white70,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Logout'),
+        ],
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Profile()),
+            );
+          } else if (index == 2) {
+            _handleLogout();
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, double screenWidth) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Image.asset(
+              "images/wave.png",
+              width: screenWidth * 0.1,
+              height: screenWidth * 0.1,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(Icons.error, color: Colors.red);
+              },
+            ),
+            const SizedBox(width: 10),
+            Text(
+              "Hello, $userName",
               style: TextStyle(
-                color: Color.fromARGB(186, 255, 255, 255),
-                fontSize: 18,
+                color: Colors.white,
+                fontSize: screenWidth * 0.06,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Row(
-              children: [
-                const Text(
-                  "Trad",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text(
-                  "ezy",
-                  style: TextStyle(
-                    color: Colors.blueAccent,
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+          ],
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Profile()),
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.blueAccent, width: 2.0),
             ),
-            const SizedBox(height: 10),
-            Center(
-              child: CarouselSlider(
-                items: images.map((image) {
-                  return GestureDetector(
-                    onTap: () => _launchURL(image["link"]!),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.asset(
-                        image["url"]!,
-                        fit: BoxFit.contain,
-                        width: MediaQuery.of(context).size.width * 0.85,
-                        height: 220,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Image.asset(
+                userGender.toLowerCase() == "female"
+                    ? "images/female.png"
+                    : "images/male.png",
+                width: screenWidth * 0.12,
+                height: screenWidth * 0.12,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(Icons.person, color: Colors.blueAccent);
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildWelcomeText() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Welcome to,",
+          style: TextStyle(
+            color: Color.fromARGB(186, 255, 255, 255),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Row(
+          children: [
+            const Text(
+              "Trad",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Text(
+              "ezy",
+              style: TextStyle(
+                color: Colors.blueAccent,
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCarousel(double screenWidth, double screenHeight) {
+    return Center(
+      child: CarouselSlider(
+        items: images.map((image) {
+          return GestureDetector(
+            onTap: () => _launchURL(image["link"]!),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12.0),
+              child: Image.asset(
+                image["url"]!,
+                fit: BoxFit.contain,
+                width: screenWidth * 0.9,
+                height: screenHeight * 0.25,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: Colors.black,
+                    child: const Center(
+                      child: Text(
+                        "Unable to load image",
+                        style: TextStyle(color: Colors.red),
                       ),
                     ),
                   );
-                }).toList(),
-                options: CarouselOptions(
-                  height: 140,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  viewportFraction: 0.85,
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                ),
+                },
               ),
             ),
-            const SizedBox(height: 30),
-            Expanded(
-              child: Column(
-                children: [
-                  _buildConditionBox(
-                    "Money",
-                    _getMoneyCondition(),
-                    Colors.blueAccent,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  _buildConditionBox(
-                    "News",
-                    "View Latest Updates",
-                    Colors.blue,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Newspage()),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  _buildConditionBox(
-                    "Notes",
-                    _getNotesCondition(),
-                    Colors.blue,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const NotesPage()),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  _buildConditionBox(
-                    "Daily Motivation",
-                    _getDailyMotivation(),
-                    Colors.blue,
-                    onTap: () {
-                      setState(() {
-                        // Refresh the motivational message on tap
-                      });
-                    },
-                  ),
-                ],
+          );
+        }).toList(),
+        options: CarouselOptions(
+          height: screenHeight * 0.25,
+          autoPlay: true,
+          enlargeCenterPage: true,
+          viewportFraction: 0.9,
+          autoPlayAnimationDuration: const Duration(milliseconds: 800),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildConditionBoxes(BuildContext context) {
+    return Column(
+      children: [
+        _buildConditionBox(
+          "Money",
+          _getMoneyCondition(),
+          Colors.blueAccent,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+            );
+          },
+        ),
+        const SizedBox(height: 16),
+        _buildConditionBox(
+          "News",
+          "View Latest Updates",
+          Colors.blue,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const Newspage()),
+            );
+          },
+        ),
+        const SizedBox(height: 16),
+        _buildConditionBox(
+          "Notes",
+          _getNotesCondition(),
+          Colors.blue,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const NotesPage()),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildConditionBox(String title, String condition, Color color,
+      {VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.grey[900],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: color, width: 2),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Flexible(
+              child: Text(
+                condition,
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  color: condition.contains("Above") || condition.contains("Available")
+                      ? Colors.green
+                      : condition.contains("Below") || condition.contains("No")
+                          ? Colors.red
+                          : Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
@@ -357,37 +437,46 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildConditionBox(String title, String condition, Color color, {VoidCallback? onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.grey[900],
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: color, width: 2),
+  Widget _buildDailyMotivationSection() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.blue[900]!, Colors.blue[400]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Daily Motivation",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
             ),
-            Text(
-              condition,
-              style: TextStyle(
-                color: condition.contains("Above") || condition.contains("Available") 
-                    ? Colors.green 
-                    : condition.contains("Below") || condition.contains("No") 
-                        ? Colors.red 
-                        : Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            _getDailyMotivation(),
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
