@@ -16,9 +16,10 @@ class _ProfileState extends State<Profile> {
   Map<String, dynamic>? _userData;
 
   final List<String> _institutionOptions = [
-    'Preschool',
-    'School',
-    'University'
+    'Beginner Trader',
+    'Amateur Trader',
+    'Advanced trader',
+    'Pro trader',
   ];
 
   final List<String> _genderOptions = [
