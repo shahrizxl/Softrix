@@ -13,17 +13,17 @@ class _AiState extends State<Ai> {
   final gemini = Gemini.instance;
   List<ChatMessage> messages = [];
   final currentUser = ChatUser(id: "0", firstName: "User");
-  final geminiUser = ChatUser(id: "1", firstName: "Tradezy AI");
+  final geminiUser = ChatUser(id: "1", firstName: "Softrix AI");
 
   String formatAIResponse(String response) {
     response = response.replaceAllMapped(
       RegExp(r'\*\*(.*?)\*\*'),
-      (match) => '${match[1]}:', 
+          (match) => '${match[1]}:',
     );
 
     response = response.replaceAllMapped(
       RegExp(r'\* (.*?)(?:\n|$)'),
-      (match) => '- ${match[1]}\n',
+          (match) => '- ${match[1]}\n',
     );
 
     return response.trim();
@@ -38,8 +38,8 @@ class _AiState extends State<Ai> {
         textWidgets.add(
           Text(
             line,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: message.user == currentUser ? Colors.white : Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
@@ -49,8 +49,8 @@ class _AiState extends State<Ai> {
         textWidgets.add(
           Text(
             line,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: message.user == currentUser ? Colors.white : Colors.black,
               fontSize: 14,
             ),
           ),
@@ -66,7 +66,7 @@ class _AiState extends State<Ai> {
 
   BoxDecoration messageDecorationBuilder(ChatMessage message, ChatMessage? previousMessage, ChatMessage? nextMessage) {
     return BoxDecoration(
-      color: message.user == currentUser ? Colors.blueAccent : Colors.grey[800],
+      color: message.user == currentUser ? const Color(0xFF007BFF) : Colors.grey[200],
       borderRadius: BorderRadius.circular(12),
     );
   }
@@ -77,13 +77,15 @@ class _AiState extends State<Ai> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'My AI',
-          style: TextStyle(color: Colors.white),
+          'Softrix AI',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: Colors.grey[900],
         elevation: 0,
       ),
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Colors.white,
       body: DashChat(
         currentUser: currentUser,
         onSend: _handleSendMessage,
@@ -91,7 +93,7 @@ class _AiState extends State<Ai> {
         messageOptions: MessageOptions(
           showTime: true,
           timeTextColor: Colors.grey,
-          messageTextBuilder: textBuilder, 
+          messageTextBuilder: textBuilder,
           messageDecorationBuilder: messageDecorationBuilder,
         ),
         inputOptions: InputOptions(
@@ -99,13 +101,17 @@ class _AiState extends State<Ai> {
             hintText: 'Type your message...',
             hintStyle: const TextStyle(color: Colors.grey),
             filled: true,
-            fillColor: Colors.grey[800],
+            fillColor: Colors.grey[50],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
+              borderSide: const BorderSide(color: Color(0xFF007BFF)),
             ),
           ),
-          inputTextStyle: const TextStyle(color: Colors.white),
+          inputTextStyle: const TextStyle(color: Colors.black),
+          sendButtonBuilder: (onSend) => IconButton(
+            onPressed: onSend,
+            icon: const Icon(Icons.send, color: Color(0xFF007BFF)),
+          ),
         ),
       ),
     );

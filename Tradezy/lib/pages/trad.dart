@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:Tradezy/pages/portfolio.dart'; 
+import 'package:Tradezy/pages/portfolio.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'; 
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:ui'; // For BackdropFilter
 
 class LearnPage extends StatefulWidget {
@@ -13,7 +13,6 @@ class LearnPage extends StatefulWidget {
   @override
   _LearnPageState createState() => _LearnPageState();
 }
-
 
 class _LearnPageState extends State<LearnPage> {
   int _selectedIndex = 0;
@@ -200,14 +199,20 @@ class _LearnPageState extends State<LearnPage> {
         virtualMoney = newMoney;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Virtual money updated to RM ${newMoney.toStringAsFixed(2)}')),
+        SnackBar(
+          content: Text('Virtual money updated to RM ${newMoney.toStringAsFixed(2)}'),
+          backgroundColor: const Color(0xFF007BFF),
+        ),
       );
     } catch (e) {
       setState(() {
         _errorMessage = 'Failed to update virtual money: $e';
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update virtual money: $e')),
+        SnackBar(
+          content: Text('Failed to update virtual money: $e'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -243,174 +248,9 @@ class _LearnPageState extends State<LearnPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Virtual Money: RM ${virtualMoney.toStringAsFixed(2)}',
-                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        virtualMoney += 5000.0;
-                      });
-                      _updateVirtualMoney(virtualMoney);
-                    },
-                    child: const Text('Add RM 5,000'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        virtualMoney = 10000.0;
-                      });
-                      _updateVirtualMoney(10000.0);
-                    },
-                    child: const Text('Reset'),
-                  ),
-                ],
-              ),
+              _buildVirtualMoneyCard(),
               const SizedBox(height: 20),
-              const Text(
-                'Price Trends',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  DropdownButton<String>(
-                    value: selectedAsset,
-                    dropdownColor: Colors.grey[900],
-                    items: ['Bitcoin', 'Gold', 'Tesla', 'Apple', 'Maybank'].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value, style: const TextStyle(color: Colors.white)),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedAsset = newValue!;
-                      });
-                    },
-                  ),
-                  DropdownButton<String>(
-                    value: selectedTimePeriod,
-                    dropdownColor: Colors.grey[900],
-                    items: ['1D', '1W', '1M'].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value, style: const TextStyle(color: Colors.white)),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedTimePeriod = newValue!;
-                        fetchPriceData();
-                      });
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _errorMessage != null
-                      ? Center(
-                          child: Column(
-                            children: [
-                              Text(
-                                _errorMessage!,
-                                style: const TextStyle(color: Colors.red, fontSize: 16),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 10),
-                              ElevatedButton(
-                                onPressed: fetchPriceData,
-                                child: const Text('Retry'),
-                              ),
-                            ],
-                          ),
-                        )
-                      : priceData[selectedAsset]!.isEmpty
-                          ? const Center(
-                              child: Text(
-                                'No data available for this asset.',
-                                style: TextStyle(color: Colors.white, fontSize: 16),
-                              ),
-                            )
-                          : Container(
-                              height: 400,
-                              child: LineChart(
-                                LineChartData(
-                                  gridData: FlGridData(
-                                    show: true,
-                                    drawVerticalLine: false,
-                                    horizontalInterval: _getFixedYInterval(selectedAsset), 
-                                    getDrawingHorizontalLine: (value) {
-                                      return FlLine(
-                                        color: Colors.white24,
-                                        strokeWidth: 1,
-                                      );
-                                    },
-                                  ),
-                                  titlesData: FlTitlesData(
-                                    show: true,
-                                    leftTitles: AxisTitles(
-                                      sideTitles: SideTitles(
-                                        showTitles: true,
-                                        reservedSize: 60,
-                                        interval: _getFixedYInterval(selectedAsset), 
-                                        getTitlesWidget: (value, meta) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(right: 8.0),
-                                            child: Text(
-                                              _formatPrice(value, selectedAsset),
-                                              style: const TextStyle(
-                                                color: Colors.white70,
-                                                fontSize: 12,
-                                              ),
-                                              textAlign: TextAlign.right,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                    bottomTitles: const AxisTitles(
-                                      sideTitles: SideTitles(
-                                        showTitles: false,
-                                      ),
-                                    ),
-                                    topTitles: const AxisTitles(
-                                      sideTitles: SideTitles(
-                                        showTitles: false,
-                                      ),
-                                    ),
-                                    rightTitles: const AxisTitles(
-                                      sideTitles: SideTitles(
-                                        showTitles: false,
-                                      ),
-                                    ),
-                                  ),
-                                  borderData: FlBorderData(
-                                    show: true,
-                                    border: Border.all(color: Colors.white24, width: 1),
-                                  ),
-                                  lineBarsData: [
-                                    LineChartBarData(
-                                      spots: priceData[selectedAsset]!,
-                                      isCurved: true,
-                                      color: Colors.blueAccent,
-                                      dotData: const FlDotData(show: false),
-                                      belowBarData: BarAreaData(show: false),
-                                    ),
-                                  ],
-                                  minY: _getMinY(selectedAsset) != null ? _getMinY(selectedAsset)! * 0.7 : null, 
-                                  maxY: _getMaxY(selectedAsset) != null ? _getMaxY(selectedAsset)! * 1.3 : null, 
-                                ),
-                              ),
-                            ),
+              _buildPriceTrendsCard(),
             ],
           ),
         ),
@@ -430,42 +270,473 @@ class _LearnPageState extends State<LearnPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Learn', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
+        title: const Text(
+          'Trading Academy',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+          ),
+        ),
+        elevation: 0,
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'How Trading Works',
-            backgroundColor: Colors.black,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book_outlined),
+              activeIcon: Icon(Icons.book),
+              label: 'Learn',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.trending_up_outlined),
+              activeIcon: Icon(Icons.trending_up),
+              label: 'Trends',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance_wallet_outlined),
+              activeIcon: Icon(Icons.account_balance_wallet),
+              label: 'Portfolio',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.business_center_outlined),
+              activeIcon: Icon(Icons.business_center),
+              label: 'Platforms',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: const Color(0xFF007BFF),
+          unselectedItemColor: Colors.grey,
+          backgroundColor: Colors.white,
+          type: BottomNavigationBarType.fixed,
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+          unselectedLabelStyle: const TextStyle(fontSize: 12),
+          elevation: 0,
+          onTap: _onItemTapped,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVirtualMoneyCard() {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: const LinearGradient(
+            colors: [Color(0xFF007BFF), Color(0xFF4DA3FF)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.trending_up),
-            label: 'Trends',
-            backgroundColor: Colors.black,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            label: 'Portfolio',
-            backgroundColor: Colors.black,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business_center),
-            label: 'Platforms',
-            backgroundColor: Colors.black,
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blueAccent,
-        unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.black,
-        onTap: _onItemTapped,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.account_balance_wallet,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Virtual Trading Balance',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'RM ${virtualMoney.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        virtualMoney += 5000.0;
+                      });
+                      _updateVirtualMoney(virtualMoney);
+                    },
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add RM 5,000'),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: const Color(0xFF007BFF),
+                      backgroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        virtualMoney = 10000.0;
+                      });
+                      _updateVirtualMoney(10000.0);
+                    },
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Reset'),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: const Color(0xFF007BFF),
+                      backgroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPriceTrendsCard() {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Price Trends',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2D3436),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.refresh, color: Color(0xFF007BFF)),
+                  onPressed: fetchPriceData,
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildAssetDropdown(),
+                _buildTimeframeDropdown(),
+              ],
+            ),
+            const SizedBox(height: 20),
+            _isLoading
+                ? const Center(
+              child: Column(
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF007BFF)),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Loading price data...',
+                    style: TextStyle(
+                      color: Color(0xFF2D3436),
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            )
+                : _errorMessage != null
+                ? Center(
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                    size: 48,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: fetchPriceData,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF007BFF),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            )
+                : priceData[selectedAsset]!.isEmpty
+                ? Center(
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.bar_chart_outlined,
+                    color: Colors.grey[400],
+                    size: 48,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No data available for this asset.',
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            )
+                : Container(
+              height: 400,
+              padding: const EdgeInsets.only(top: 16),
+              child: LineChart(
+                LineChartData(
+                  gridData: FlGridData(
+                    show: true,
+                    drawVerticalLine: false,
+                    horizontalInterval: _getFixedYInterval(selectedAsset),
+                    getDrawingHorizontalLine: (value) {
+                      return FlLine(
+                        color: Colors.grey[300]!,
+                        strokeWidth: 1,
+                      );
+                    },
+                  ),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 60,
+                        interval: _getFixedYInterval(selectedAsset),
+                        getTitlesWidget: (value, meta) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Text(
+                              _formatPrice(value, selectedAsset),
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 12,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    bottomTitles: const AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                      ),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                      ),
+                    ),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                      ),
+                    ),
+                  ),
+                  borderData: FlBorderData(
+                    show: true,
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey[300]!, width: 1),
+                      left: BorderSide(color: Colors.grey[300]!, width: 1),
+                    ),
+                  ),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: priceData[selectedAsset]!,
+                      isCurved: true,
+                      color: const Color(0xFF007BFF),
+                      barWidth: 3,
+                      dotData: FlDotData(
+                        show: false,
+                        getDotPainter: (spot, percent, barData, index) {
+                          return FlDotCirclePainter(
+                            radius: 4,
+                            color: const Color(0xFF007BFF),
+                            strokeWidth: 2,
+                            strokeColor: Colors.white,
+                          );
+                        },
+                      ),
+                      belowBarData: BarAreaData(
+                        show: true,
+                        color: const Color(0xFF007BFF).withOpacity(0.1),
+                      ),
+                    ),
+                  ],
+                  minY: _getMinY(selectedAsset) != null ? _getMinY(selectedAsset)! * 0.7 : null,
+                  maxY: _getMaxY(selectedAsset) != null ? _getMaxY(selectedAsset)! * 1.3 : null,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            if (!_isLoading && _errorMessage == null && priceData[selectedAsset]!.isNotEmpty)
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF007BFF).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.info_outline,
+                      color: Color(0xFF007BFF),
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'This chart shows the price trend for $selectedAsset over the last $selectedTimePeriod. Use this data to make informed trading decisions.',
+                        style: const TextStyle(
+                          color: Color(0xFF007BFF),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAssetDropdown() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: DropdownButton<String>(
+        value: selectedAsset,
+        underline: const SizedBox(),
+        icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF007BFF)),
+        style: const TextStyle(
+          color: Color(0xFF2D3436),
+          fontSize: 16,
+        ),
+        items: ['Bitcoin', 'Gold', 'Tesla', 'Apple', 'Maybank'].map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(() {
+            selectedAsset = newValue!;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget _buildTimeframeDropdown() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: DropdownButton<String>(
+        value: selectedTimePeriod,
+        underline: const SizedBox(),
+        icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF007BFF)),
+        style: const TextStyle(
+          color: Color(0xFF2D3436),
+          fontSize: 16,
+        ),
+        items: ['1D', '1W', '1M'].map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: (String? newValue) {
+          setState(() {
+            selectedTimePeriod = newValue!;
+            fetchPriceData();
+          });
+        },
       ),
     );
   }
@@ -473,17 +744,17 @@ class _LearnPageState extends State<LearnPage> {
   double _getFixedYInterval(String asset) {
     switch (asset) {
       case 'Bitcoin':
-        return 50000.0; 
+        return 50000.0;
       case 'Gold':
-        return 10000.0; 
+        return 10000.0;
       case 'Tesla':
-        return 5000.0; 
+        return 5000.0;
       case 'Apple':
-        return 5000.0; 
+        return 5000.0;
       case 'Maybank':
-        return 2.0; 
+        return 2.0;
       default:
-        return 10000.0; 
+        return 10000.0;
     }
   }
 
@@ -501,15 +772,14 @@ class _LearnPageState extends State<LearnPage> {
 
   String _formatPrice(double value, String asset) {
     if (value >= 1000) {
-      return '${(value / 1000).toStringAsFixed(0)}k'; 
+      return '${(value / 1000).toStringAsFixed(0)}k';
     } else if (asset == 'Maybank') {
       return value.toStringAsFixed(2);
     } else {
-      return value.toStringAsFixed(0); 
+      return value.toStringAsFixed(0);
     }
   }
 }
-
 
 class HowTradingWorksPage extends StatelessWidget {
   const HowTradingWorksPage({super.key});
@@ -522,11 +792,21 @@ class HowTradingWorksPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(20.0),
             decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(12.0),
-              border: Border.all(color: Colors.white, width: 1.0),
+              gradient: const LinearGradient(
+                colors: [Color(0xFF007BFF), Color(0xFF4DA3FF)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(16.0),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF007BFF).withOpacity(0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -539,44 +819,44 @@ class HowTradingWorksPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: 12),
                 Text(
                   'Master the art of trading financial assets like stocks, cryptocurrencies, and commodities to profit from price movements.',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
+                    height: 1.5,
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           Card(
-            color: Colors.black,
+            elevation: 2,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-              side: const BorderSide(color: Colors.white, width: 1.0),
+              borderRadius: BorderRadius.circular(16.0),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Row(
                     children: [
-                      Icon(Icons.show_chart, color: Colors.white, size: 24),
-                      SizedBox(width: 8),
+                      Icon(Icons.show_chart, color: Color(0xFF007BFF), size: 28),
+                      SizedBox(width: 12),
                       Text(
                         'Key Trading Concepts',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFF2D3436),
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   _buildEnhancedBulletPoint(
                     icon: Icons.trending_up,
                     text: 'Buy and Sell: Buy low, sell high to make a profit. Alternatively, use short-selling to profit from falling prices.',
@@ -598,55 +878,57 @@ class HowTradingWorksPage extends StatelessWidget {
                     text: 'Technical Analysis: Analyze price charts and indicators (e.g., Moving Averages, RSI) for predictions.',
                   ),
                   _buildEnhancedBulletPoint(
-                    icon: Icons.trending_up_outlined,
-                    text: 'Fundamental Analysis: Assess an asset’s value using economic data, earnings, and market trends.',
+                      icon: Icons.trending_up_outlined,
+                      text: 'Fundamental Analysis: Assess an assets value using economic data, earnings, and market trends.',
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           Card(
-            color: Colors.black,
+            elevation: 2,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-              side: const BorderSide(color: Colors.white, width: 1.0),
+              borderRadius: BorderRadius.circular(16.0),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Row(
                     children: [
-                      Icon(Icons.play_arrow, color: Colors.white, size: 24),
-                      SizedBox(width: 8),
+                      Icon(Icons.play_arrow, color: Color(0xFF007BFF), size: 28),
+                      SizedBox(width: 12),
                       Text(
                         'Getting Started',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFF2D3436),
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   const Text(
                     'Follow these steps to begin your trading journey:',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(
+                      color: Color(0xFF2D3436),
+                      fontSize: 16,
+                      height: 1.5,
+                    ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 16),
                   _buildStep('1. Choose a platform (explore Best Trading Platforms).'),
                   _buildStep('2. Practice with a demo account to build confidence.'),
                   _buildStep('3. Create a trading plan with clear goals and risk limits.'),
                   _buildStep('4. Start with small investments and scale up with experience.'),
-                  const SizedBox(height: 20),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           // Quiz Section
           const TradingQuizSection(),
         ],
@@ -656,16 +938,27 @@ class HowTradingWorksPage extends StatelessWidget {
 
   Widget _buildEnhancedBulletPoint({required IconData icon, required String text}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: Colors.white, size: 20),
-          const SizedBox(width: 12),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF007BFF).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, color: const Color(0xFF007BFF), size: 20),
+          ),
+          const SizedBox(width: 16),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(
+                color: Color(0xFF2D3436),
+                fontSize: 16,
+                height: 1.5,
+              ),
             ),
           ),
         ],
@@ -679,12 +972,27 @@ class HowTradingWorksPage extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.check_circle, color: Colors.white, size: 20),
-          const SizedBox(width: 12),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF007BFF).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(
+              Icons.check_circle,
+              color: Color(0xFF007BFF),
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 16),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(
+                color: Color(0xFF2D3436),
+                fontSize: 16,
+                height: 1.5,
+              ),
             ),
           ),
         ],
@@ -781,102 +1089,146 @@ class _TradingQuizSectionState extends State<TradingQuizSection> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.black,
+      elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-        side: const BorderSide(color: Colors.white, width: 1.0),
+        borderRadius: BorderRadius.circular(16.0),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12.0),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+          border: Border.all(
+            color: const Color(0xFF007BFF).withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                const Row(
-                  children: [
-                    Icon(Icons.quiz, color: Colors.white, size: 24),
-                    SizedBox(width: 8),
-                    Text(
-                      'Test Your Knowledge',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF007BFF).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.quiz,
+                    color: Color(0xFF007BFF),
+                    size: 24,
+                  ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(width: 16),
                 const Text(
-                  'Answer the following questions to test your understanding of trading basics:',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
+                  'Test Your Knowledge',
+                  style: TextStyle(
+                    color: Color(0xFF2D3436),
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const SizedBox(height: 20),
-                ...List.generate(quizQuestions.length, (index) {
-                  return _buildQuizQuestion(index);
-                }),
-                const SizedBox(height: 20),
-                if (isSubmitted)
-                  Column(
-                    children: [
-                      Text(
-                        'Your Score: $score/${quizQuestions.length}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _resetQuiz,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          'Try Again',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                else
-                  ElevatedButton(
-                    onPressed: _submitQuiz,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Answer the following questions to test your understanding of trading basics:',
+              style: TextStyle(
+                color: Color(0xFF2D3436),
+                fontSize: 16,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 24),
+            ...List.generate(quizQuestions.length, (index) {
+              return _buildQuizQuestion(index);
+            }),
+            const SizedBox(height: 24),
+            if (isSubmitted)
+              Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: score > 3
+                          ? Colors.green.withOpacity(0.1)
+                          : const Color(0xFF007BFF).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Text(
-                      'Check Answers',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    child: Row(
+                      children: [
+                        Icon(
+                          score > 3 ? Icons.emoji_events : Icons.school,
+                          color: score > 3 ? Colors.green : const Color(0xFF007BFF),
+                          size: 28,
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Your Score: $score/${quizQuestions.length}',
+                                style: TextStyle(
+                                  color: score > 3 ? Colors.green : const Color(0xFF007BFF),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                score > 3
+                                    ? 'Great job! You have a solid understanding of trading basics.'
+                                    : 'Keep learning! Review the concepts and try again.',
+                                style: TextStyle(
+                                  color: score > 3 ? Colors.green[700] : const Color(0xFF007BFF),
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _resetQuiz,
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Try Again'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF007BFF),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
                   ),
-              ],
-            ),
-          ),
+                ],
+              )
+            else
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: _submitQuiz,
+                  icon: const Icon(Icons.check_circle),
+                  label: const Text('Check Answers'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF007BFF),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
@@ -884,64 +1236,137 @@ class _TradingQuizSectionState extends State<TradingQuizSection> {
 
   Widget _buildQuizQuestion(int index) {
     final question = quizQuestions[index];
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isSubmitted && userAnswers[index] != null
+              ? userAnswers[index] == question['correctAnswer']
+              ? Colors.green.withOpacity(0.3)
+              : Colors.red.withOpacity(0.3)
+              : Colors.grey[200]!,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Question ${index + 1}: ${question['question']}',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10),
-          ...List.generate(question['options'].length, (optionIndex) {
-            return RadioListTile<int>(
-              value: optionIndex,
-              groupValue: userAnswers[index],
-              onChanged: isSubmitted
-                  ? null
-                  : (value) {
-                      setState(() {
-                        userAnswers[index] = value;
-                      });
-                    },
-              title: Text(
-                question['options'][optionIndex],
-                style: const TextStyle(color: Colors.white, fontSize: 16),
-              ),
-              activeColor: Colors.blueAccent,
-              tileColor: isSubmitted
-                  ? (optionIndex == question['correctAnswer']
-                      ? Colors.green.withOpacity(0.2)
-                      : userAnswers[index] == optionIndex
-                          ? Colors.red.withOpacity(0.2)
-                          : null)
-                  : null,
-            );
-          }),
-          if (isSubmitted)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                userAnswers[index] == question['correctAnswer']
-                    ? 'Correct! ✅'
-                    : 'Incorrect. The correct answer is: ${question['options'][question['correctAnswer']]} ❌',
-                style: TextStyle(
-                  color: userAnswers[index] == question['correctAnswer'] ? Colors.green : Colors.red,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF007BFF).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '${index + 1}',
+                  style: const TextStyle(
+                    color: Color(0xFF007BFF),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  question['question'],
+                  style: const TextStyle(
+                    color: Color(0xFF2D3436),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          ...List.generate(question['options'].length, (optionIndex) {
+            final isCorrect = optionIndex == question['correctAnswer'];
+            final isSelected = userAnswers[index] == optionIndex;
+            final showCorrectness = isSubmitted && (isCorrect || isSelected);
+
+            return InkWell(
+              onTap: isSubmitted ? null : () {
+                setState(() {
+                  userAnswers[index] = optionIndex;
+                });
+              },
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: showCorrectness
+                      ? isCorrect
+                      ? Colors.green.withOpacity(0.1)
+                      : Colors.red.withOpacity(0.1)
+                      : isSelected
+                      ? const Color(0xFF007BFF).withOpacity(0.1)
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: showCorrectness
+                        ? isCorrect
+                        ? Colors.green
+                        : Colors.red
+                        : isSelected
+                        ? const Color(0xFF007BFF)
+                        : Colors.grey[300]!,
+                    width: isSelected ? 2 : 1,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      showCorrectness
+                          ? isCorrect
+                          ? Icons.check_circle
+                          : Icons.cancel
+                          : isSelected
+                          ? Icons.radio_button_checked
+                          : Icons.radio_button_unchecked,
+                      color: showCorrectness
+                          ? isCorrect
+                          ? Colors.green
+                          : Colors.red
+                          : isSelected
+                          ? const Color(0xFF007BFF)
+                          : Colors.grey[400],
+                      size: 20,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        question['options'][optionIndex],
+                        style: TextStyle(
+                          color: showCorrectness
+                              ? isCorrect
+                              ? Colors.green[700]
+                              : Colors.red[700]
+                              : isSelected
+                              ? const Color(0xFF007BFF)
+                              : const Color(0xFF2D3436),
+                          fontWeight: isSelected || (showCorrectness && isCorrect)
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
         ],
       ),
     );
   }
 }
+
 class BestTradingPlatformsPage extends StatefulWidget {
   const BestTradingPlatformsPage({super.key});
 
@@ -1006,96 +1431,92 @@ class _BestTradingPlatformsPageState extends State<BestTradingPlatformsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Best Trading Platforms'),
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.black,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Top Trading Platforms for 2025',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF007BFF), Color(0xFF4DA3FF)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF007BFF).withOpacity(0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Find the best platform for your trading level.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Top Trading Platforms for 2025',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Select your experience level:',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                const SizedBox(height: 10),
-                _buildDropdown(),
-              ],
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Find the best platform for your trading level and start your journey today.',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      height: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: DropdownButton<String>(
+                      value: selectedCategory,
+                      underline: const SizedBox(),
+                      isExpanded: true,
+                      icon: const Icon(Icons.arrow_drop_down, color: Color(0xFF007BFF)),
+                      style: const TextStyle(
+                        color: Color(0xFF2D3436),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedCategory = newValue!;
+                        });
+                      },
+                      items: ['Beginner', 'Amateur', 'Pro'].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16.0),
-              itemCount: platforms[selectedCategory]?.length ?? 0,
-              itemBuilder: (context, index) {
-                final platform = platforms[selectedCategory]![index];
-                return _buildPlatformCard(
-                  title: platform['title']!,
-                  pros: platform['pros']!,
-                  cons: platform['cons']!,
-                  image: platform['image']!,
-                  link: platform['link']!,
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDropdown() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: Colors.white, width: 1.0),
-      ),
-      child: DropdownButton<String>(
-        value: selectedCategory,
-        dropdownColor: Colors.black,
-        style: const TextStyle(color: Colors.white, fontSize: 16),
-        icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-        underline: const SizedBox(),
-        isExpanded: true,
-        onChanged: (String? newValue) {
-          setState(() {
-            selectedCategory = newValue!;
-          });
-        },
-        items: ['Beginner', 'Amateur', 'Pro'].map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value, style: const TextStyle(color: Colors.white)),
-          );
-        }).toList(),
+            const SizedBox(height: 24),
+            ...platforms[selectedCategory]!.map((platform) => _buildPlatformCard(
+              title: platform['title']!,
+              pros: platform['pros']!,
+              cons: platform['cons']!,
+              image: platform['image']!,
+              link: platform['link']!,
+            )).toList(),
+          ],
+        ),
       ),
     );
   }
@@ -1108,108 +1529,119 @@ class _BestTradingPlatformsPageState extends State<BestTradingPlatformsPage> {
     required String link,
   }) {
     return Card(
-      color: Colors.black,
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-        side: const BorderSide(color: Colors.white, width: 1.0),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    image,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                    semanticLabel: 'Platform logo for $title',
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.error, color: Colors.white, size: 50);
-                    },
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey[300]!),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      image,
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: const Color(0xFF007BFF).withOpacity(0.1),
+                          child: const Icon(
+                            Icons.business,
+                            color: Color(0xFF007BFF),
+                            size: 30,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 16),
                 Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          color: Color(0xFF2D3436),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF007BFF).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          'Recommended for $selectedCategory Traders',
+                          style: const TextStyle(
+                            color: Color(0xFF007BFF),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            const Text(
-              'Pros:',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              pros,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Cons:',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              cons,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
             const SizedBox(height: 16),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  side: const BorderSide(color: Colors.white, width: 1.0),
+            _buildFeatureSection('Pros', pros, Icons.thumb_up, Colors.green),
+            const SizedBox(height: 12),
+            _buildFeatureSection('Cons', cons, Icons.thumb_down, Colors.red),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: _isLaunchingUrl
+                    ? null
+                    : () async {
+                  setState(() {
+                    _isLaunchingUrl = true;
+                  });
+                  await _launchURL(link);
+                  setState(() {
+                    _isLaunchingUrl = false;
+                  });
+                },
+                icon: _isLaunchingUrl
+                    ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
+                )
+                    : const Icon(Icons.download),
+                label: const Text('Install App'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF007BFF),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
-              onPressed: _isLaunchingUrl
-                  ? null
-                  : () async {
-                      setState(() {
-                        _isLaunchingUrl = true;
-                      });
-                      await launchURL(link);
-                      setState(() {
-                        _isLaunchingUrl = false;
-                      });
-                    },
-              child: _isLaunchingUrl
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : const Text(
-                      'Install',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
             ),
           ],
         ),
@@ -1217,20 +1649,72 @@ class _BestTradingPlatformsPageState extends State<BestTradingPlatformsPage> {
     );
   }
 
-  Future<void> launchURL(String url) async {
+  Widget _buildFeatureSection(String title, String content, IconData icon, Color color) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: color,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                content,
+                style: const TextStyle(
+                  color: Color(0xFF2D3436),
+                  fontSize: 14,
+                  height: 1.5,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _launchURL(String url) async {
     try {
       final uri = Uri.parse(url);
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch URL')),
+          const SnackBar(
+            content: Text('Could not launch URL'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error launching URL: $e')),
+        SnackBar(
+          content: Text('Error launching URL: $e'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
 }
+
