@@ -1,4 +1,4 @@
-# tradezy
+# softrix
 
 A new Flutter project.
 
