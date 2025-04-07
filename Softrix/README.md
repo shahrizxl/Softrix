@@ -1,4 +1,4 @@
-# softrix
+# Softrix
 
 A new Flutter project.
 
