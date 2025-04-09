@@ -20,6 +20,7 @@
     <li><a href="#use-of-ai--technology">Use of AI & Technology</a></li>
     <li><a href="#impact--vision">Impact & Vision</a></li>
     <li><a href="#future-plans">Future Plans</a></li>
+    <li><a href="#tech-used">Technologies Used</a></li>
     <li><a href="#how-to-run">How to Run</a></li>
     <li><a href="#screenshots">Screenshots</a></li>
     <li><a href="#contributors">Contributors</a></li>
@@ -63,18 +64,6 @@ Softrix is designed to simplify the trading experience for beginners by providin
 
 ---
 
-## 🛠️ Technologies Used
-
-| Flutter                          | Supabase                        | Gemini AI                      |
-| -------------------------------- | ------------------------------- | ------------------------------ |
-| <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="300"/> | <img src="images/idsfIhEopt_logos.png" alt="Supabase" width="350"/> | <img src="images/Google-Gemini-Logo-Transparent.png" alt="Gemini AI" width="350"/> |
-
-- **Flutter** – For building a smooth, cross-platform mobile experience.
-- **Supabase** – Open-source backend for authentication, database, and storage.
-- **Gemini AI** – Powers our AI chat for personalized trading support and insights.
-
----
-
 ## Main Features
 - **AI Chat** – Get instant, beginner-friendly financial advice anytime. Whether you're unsure about terms or need a second opinion before trading, Softrix AI has your back.
 - **Community Chat** – Join an active community of fellow traders. Share insights, ask questions, and build confidence through real conversations.
@@ -111,6 +100,18 @@ Softrix is designed to simplify the trading experience for beginners by providin
 - Become a global go-to platform for beginner investors.
 - Bridge the financial education gap.
 - Support a financially equal society.
+
+---
+
+## <a name="main-features"></a>Technologies Used
+
+| Flutter                          | Supabase                        | Gemini AI                      |
+| -------------------------------- | ------------------------------- | ------------------------------ |
+| <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="300"/> | <img src="images/idsfIhEopt_logos.png" alt="Supabase" width="350"/> | <img src="images/Google-Gemini-Logo-Transparent.png" alt="Gemini AI" width="350"/> |
+
+- **Flutter** – For building a smooth, cross-platform mobile experience.
+- **Supabase** – Open-source backend for authentication, database, and storage.
+- **Gemini AI** – Powers our AI chat for personalized trading support and insights.
 
 ---
 
