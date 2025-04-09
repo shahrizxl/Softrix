@@ -22,7 +22,7 @@
     <li><a href="#tech-used">Technologies Used</a></li>
     <li><a href="#future-plans">Future Plans</a></li>
     <li><a href="#how-to-run">How to Run</a></li>
-    <li><a href="#screenshots">Screenshots</a></li>
+    <li><a href="#prototype">Prototype</a></li>
     <li><a href="#contributors">Contributors</a></li>
   </ol>
 </details>
@@ -103,7 +103,7 @@ Softrix is designed to simplify the trading experience for beginners by providin
 
 ---
 
-## <a name="#tech-used"></a>Technologies Used
+## <a name="tech-used"></a>Technologies Used
 
 | Flutter                          | Supabase                        | Gemini AI                      |
 | -------------------------------- | ------------------------------- | ------------------------------ |
@@ -154,7 +154,7 @@ Ensure that your emulator or device is connected and running before executing th
 
 ---
 
-## <a name="screenshots"></a>Prototype
+## <a name="prototype"></a>Prototype
 
 ### Screenshots
 Splash Screen | Onboarding | AI Chat | Trading Academy  
@@ -165,9 +165,15 @@ Community Chat | E-Wallet | Financial News | Sign Up
 :--:|:--:|:--:|:--:  
 <img src="https://your-image-link.com/communitychat.png" width="200px"/> | <img src="https://your-image-link.com/ewallet.png" width="200px"/> | <img src="https://your-image-link.com/news.png" width="200px"/> | <img src="https://your-image-link.com/signup.png" width="200px"/>
 
+Community Chat | E-Wallet | Financial News | Sign Up  
+:--:|:--:|:--:|:--:  
+<img src="https://your-image-link.com/communitychat.png" width="200px"/> | <img src="https://your-image-link.com/ewallet.png" width="200px"/> | <img src="https://your-image-link.com/news.png" width="200px"/> | <img src="https://your-image-link.com/signup.png" width="200px"/>
+
 ### Demo Video
 Check out the demo video showcasing Softrix in action:
 [Demo Video Link](https://youtube.com/shorts/Z7pZDbENaQg?feature=share)
+
+--- 
 
 ## <a name="contributors"></a>Contributors
 - **Ganessa** - Github: [(ganessa037)](https://github.com/ganessa037)
