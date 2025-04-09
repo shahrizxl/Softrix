@@ -156,5 +156,18 @@ Ensure that your emulator or device is connected and running before executing th
 
 ## <a name="screenshots"></a>Prototype
 
+### Screenshots
+Splash Screen | Onboarding | AI Chat | Trading Academy  
+:--:|:--:|:--:|:--:  
+<img src="https://your-image-link.com/splash.png" width="200px"/> | <img src="https://your-image-link.com/onboarding.png" width="200px"/> | <img src="https://your-image-link.com/aichat.png" width="200px"/> | <img src="https://your-image-link.com/academy.png" width="200px"/>
+
+Community Chat | E-Wallet | Financial News | Sign Up  
+:--:|:--:|:--:|:--:  
+<img src="https://your-image-link.com/communitychat.png" width="200px"/> | <img src="https://your-image-link.com/ewallet.png" width="200px"/> | <img src="https://your-image-link.com/news.png" width="200px"/> | <img src="https://your-image-link.com/signup.png" width="200px"/>
+
+### Demo Video
+Check out the demo video showcasing Softrix in action:
+[Demo Video Link]((https://youtube.com/shorts/Z7pZDbENaQg?feature=share))
+
 ## <a name="contributors"></a>Contributors
 
