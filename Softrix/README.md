@@ -27,11 +27,8 @@
 ---
 
 ## Problem Statement
-New traders face challenges in the financial market because of:
-- Inadequate education about trading.
-- Inaccessible, non-centralized support systems.
-- Overwhelming interfaces of trading apps.
-- Poor financial habits and lack of simple money tracking tools.
+
+New traders often face significant barriers when entering the financial market, primarily due to a lack of foundational education in trading. Many beginners struggle to navigate complex trading platforms filled with advanced jargon and overwhelming interfaces, which makes it difficult for them to feel confident and make informed decisions. Furthermore, the absence of centralized, easily accessible support systems leaves newcomers without real-time guidance or a community to turn to when questions arise. Additionally, poor financial habits and the absence of simple tools for tracking spending and investments only exacerbate the challenges, leading to confusion and potential losses. These issues contribute to a cycle of fear and uncertainty, making it harder for new traders to succeed and build wealth in the market.
 
 ---
 
