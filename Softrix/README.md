@@ -150,3 +150,9 @@ To run the app, you can use the following command:
 flutter run
 ```
 Ensure that your emulator or device is connected and running before executing the above command. Flutter will automatically detect the device and build the app accordingly.
+
+---
+
+## Prototype
+
+## Contributors
