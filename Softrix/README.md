@@ -103,7 +103,7 @@ Softrix is designed to simplify the trading experience for beginners by providin
 
 ---
 
-## <a name="main-features"></a>Technologies Used
+## <a name="#tech-used"></a>Technologies Used
 
 | Flutter                          | Supabase                        | Gemini AI                      |
 | -------------------------------- | ------------------------------- | ------------------------------ |
