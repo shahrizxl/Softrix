@@ -67,7 +67,7 @@ Softrix is designed to simplify the trading experience for beginners by providin
 
 | Flutter                          | Supabase                        | Gemini AI                      |
 | -------------------------------- | ------------------------------- | ------------------------------ |
-| <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="120"/> | <img src="images/idsfIhEopt_logos.png" alt="Supabase" width="90"/> | <img src="images/Google-Gemini-Logo-Transparent.png" alt="Gemini AI" width="80"/> |
+| <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="200"/> | <img src="images/idsfIhEopt_logos.png" alt="Supabase" width="200"/> | <img src="images/Google-Gemini-Logo-Transparent.png" alt="Gemini AI" width="200"/> |
 
 - **Flutter** – For building a smooth, cross-platform mobile experience.
 - **Supabase** – Open-source backend for authentication, database, and storage.
