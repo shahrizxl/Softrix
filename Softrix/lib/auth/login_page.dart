@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 120,
                     width: 120,
-                    child: Image.asset('images/pic44.png'), // Replace with your image
+                    child: Image.asset('images/softtrix.png'), // Replace with your image
                   ),
                   SizedBox(height: 20),
                   Text(

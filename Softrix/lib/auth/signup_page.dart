@@ -137,7 +137,7 @@ class _SignupPageState extends State<SignupPage> {
                 SizedBox(
                   height: 120,
                   width: 120,
-                  child: Image.asset('images/pic44.png'), // Replace with your image.
+                  child: Image.asset('images/softrix.png'), // Replace with your image.
                 ),
                 SizedBox(height: 20),
                 // Welcome text
