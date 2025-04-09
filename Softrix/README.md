@@ -13,14 +13,16 @@
   <summary><h1>Table of Contents</h1></summary>
   <ol>
     <li><a href="#problem-statement">Problem Statement</a></li>
-    <li><a href="#why-softrix">Why Softrix?</a></li>
+    <li><a href="#introduction-of-softrix">Introduction of Softrix</a></li>
+    <li><a href="#why-softrix">The Softrix Edge</a></li>
     <li><a href="#sustainable-development-goals">Sustainable Development Goals</a></li>
     <li><a href="#main-features">Main Features</a></li>
     <li><a href="#use-of-ai--technology">Use of AI & Technology</a></li>
     <li><a href="#impact--vision">Impact & Vision</a></li>
+    <li><a href="#future-plans">Future Plans</a></li>
     <li><a href="#how-to-run">How to Run</a></li>
-    <li><a href="#contributor">Contributor</a></li>
     <li><a href="#screenshots">Screenshots</a></li>
+    <li><a href="#contributors">Contributors</a></li>
   </ol>
 </details>
 
@@ -28,27 +30,19 @@
 
 ## Problem Statement
 
-New traders often face significant barriers when entering the financial market, primarily due to a lack of foundational education in trading. Many beginners struggle to navigate complex trading platforms filled with advanced jargon and overwhelming interfaces, which makes it difficult for them to feel confident and make informed decisions. Furthermore, the absence of centralized, easily accessible support systems leaves newcomers without real-time guidance or a community to turn to when questions arise. Additionally, poor financial habits and the absence of simple tools for tracking spending and investments only exacerbate the challenges, leading to confusion and potential losses. These issues contribute to a cycle of fear and uncertainty, making it harder for new traders to succeed and build wealth in the market.
+Paragraph....
 
 ---
 
 ## Introduction of Softrix
-When you think about trading, what comes to mind? Complex charts? Financial jargon? Risky decisions? For many beginners, diving into the world of trading can be overwhelming and confusing. That’s exactly the problem Softrix is here to solve. 
-Softrix is a smart, simple, and supportive platform built specifically for beginner traders and students looking to explore financial markets with confidence. We believe financial literacy should be accessible, interactive, and community-driven—not locked behind intimidating interfaces or expensive courses.
 
-With Softrix, users can:
-- Get **real-time AI guidance** for their trading questions
-- Learn the basics through a **gamified Trading Academy**
-- Connect with others in a safe **Community Chat** space
-- Manage their money via an intuitive **E-Wallet**
-- Stay informed with **AI-curated financial news**
+Softrix is designed to simplify the trading experience for beginners by providing them with accessible tools, educational resources, and personalized support. With an AI-driven assistant, an integrated community chat, and a comprehensive trading academy, Softrix helps users navigate the complexities of the financial world with ease. The platform is built to support beginners in their journey toward financial literacy and successful trading, offering a secure and user-friendly interface for learning, managing finances, and making informed trading decisions.
 
-Whether you're just getting started or simply want a stress-free way to understand trading, Softrix empowers you to take control of your financial future—one smart step at a time.
+---
 
 ##  The Softrix Edge
 1. **Lack of Financial Literacy Among Beginners  📉**  
-   New traders entering the financial world often feel overwhelmed, unsupported, and under-informed. Softrix is designed specifically to solve these core problems and empower users with smart tools, simple guidance, and   
-   strong community support. 
+   New traders entering the financial world often feel overwhelmed, unsupported, and under-informed. Softrix is designed specifically to solve these core problems and empower users with smart tools, simple guidance, and strong community support. 
 
 2. **No Centralized Support System 🧭**  
    There's a lack of accessible, real-time support tailored to beginners. Softrix bridges that gap with a built-in AI assistant and active user community.
@@ -69,12 +63,11 @@ Whether you're just getting started or simply want a stress-free way to understa
 
 ---
 
-<!-- TECHNOLOGIES -->
 ## 🛠️ Technologies Used
 
 | Flutter                          | Supabase                        | Gemini AI                      |
 | -------------------------------- | ------------------------------- | ------------------------------ |
-| <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="120"/> | <img src="https://supabase.com/_next/image?url=%2Fbrand-assets%2Fsupabase-logo-icon.png&w=96&q=75" alt="Supabase" width="90"/> | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Google_Gemini_logo.svg/1024px-Google_Gemini_logo.svg.png" alt="Gemini AI" width="80"/> |
+| <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="120"/> | <img src="https://supabase.com/_next/image?url=%2Fbrand-assets%2Fsupabase-logo-icon.png&w=96&q=75" alt="Supabase" width="90"/> | <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Google_Gemini_logo.svg/1024px-Gemini_logo.svg.png" alt="Gemini AI" width="80"/> |
 
 - **Flutter** – For building a smooth, cross-platform mobile experience.
 - **Supabase** – Open-source backend for authentication, database, and storage.
@@ -121,15 +114,15 @@ Whether you're just getting started or simply want a stress-free way to understa
 
 ---
 
-
-
 ## Future Plans
-1.
-2.
-3.
 
-### Clone
-Make sure you have Python & Flask installed. Then:
+- **Expand User Base**: Reach more global users, offering multilingual support to cater to diverse markets.
+- **Mobile App Enhancements**: Improve the mobile experience with new features, performance upgrades, and better accessibility.
+- **Advanced AI Features**: Introduce more sophisticated AI tools, such as predictive market analysis and deeper insights into user behavior, to provide more personalized trading advice.
+- **Partnerships & Integrations**: Partner with financial institutions and other fintech services to provide a seamless experience for Softrix users.
+- **Community Growth**: Focus on growing the Softrix community with more interactive features, allowing users to engage more deeply and help one another in their trading journeys.
+
+---
 
 ## How to Run
 
@@ -139,25 +132,5 @@ Make sure you have Python & Flask installed. Then:
 ```bash
 git clone https://github.com/yourusername/softrix.git
 cd softrix
-
 ```
 ### Setup
-1.
-2.
-3.
-
-
-
-
-
-<!-- SCREENSHOTS -->
-## Screenshots
-
-Splash Screen | Onboarding | AI Chat | Trading Academy  
-:--:|:--:|:--:|:--:  
-<img src="https://your-image-link.com/splash.png" width="200px"/> | <img src="https://your-image-link.com/onboarding.png" width="200px"/> | <img src="https://your-image-link.com/aichat.png" width="200px"/> | <img src="https://your-image-link.com/academy.png" width="200px"/>
-
-Community Chat | E-Wallet | Financial News | Sign Up  
-:--:|:--:|:--:|:--:  
-<img src="https://your-image-link.com/communitychat.png" width="200px"/> | <img src="https://your-image-link.com/ewallet.png" width="200px"/> | <img src="https://your-image-link.com/news.png" width="200px"/> | <img src="https://your-image-link.com/signup.png" width="200px"/>
-
