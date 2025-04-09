@@ -6,7 +6,7 @@
 
 <h3 align="center">Softrix</h3>
 <p align="center">
-  Smart, Simple, Supportive Trading for Everyone (3S)
+  Smart | Simple | Supportive Trading
 </p>
 
 <details open="open">
