@@ -167,7 +167,11 @@ Community Chat | E-Wallet | Financial News | Sign Up
 
 ### Demo Video
 Check out the demo video showcasing Softrix in action:
-[Demo Video Link]((https://youtube.com/shorts/Z7pZDbENaQg?feature=share))
+[Demo Video Link](https://youtube.com/shorts/Z7pZDbENaQg?feature=share)
 
 ## <a name="contributors"></a>Contributors
+- **Ganessa** - Github: [(ganessa037)](https://github.com/ganessa037)
+- **Shahrizal** - Github: [(shahrizxl)](https://github.com/shahrizxl)
+- **Ahmad Daniel** - Github: [(AhmaDaniel)](https://github.com/AhmaDaniel)
+- **Rubeneswaren** - Github: [(RUBEN-16)](https://github.com/RUBEN-16)
 
