@@ -127,11 +127,22 @@ Softrix is designed to simplify the trading experience for beginners by providin
 
 ## How to Run
 Before running the Softrix Flutter app, make sure you have the following installed on your local machine: 
-- Flutter SDK: Follow the installation guide for Flutter here. 
-- Dart SDK: Dart comes bundled with Flutter, so no need to install it separately. 
-- Code Editor: Install any code editor, such as Visual Studio Code or Android Studio, with the Flutter plugin. 
-- Android Studio (for Android development) or Xcode (for iOS development) for building and running the app on your respective device or emulator.
-- 
+- **Flutter SDK**: Follow the installation guide for Flutter [here](https://flutter.dev/docs/get-started/install). 
+- **Dart SDK**: Dart comes bundled with Flutter, so no need to install it separately. 
+- **Code Editor**: Install any code editor, such as Visual Studio Code or Android Studio, with the Flutter plugin. 
+- **Android Studio** (for Android development) or **Xcode** (for iOS development) for building and running the app on your respective device or emulator.
+
+### Enable Developer Mode and Set Up Device/Emulator
+
+- **For Android Device**: 
+   1. Enable Developer Mode on your Android phone by going to **Settings > About Phone** and tapping on **Build Number** seven times.
+   2. Then, enable **USB Debugging** in **Settings > Developer Options**.
+   3. Connect your Android device to your computer via USB cable.
+
+- **For Android Emulator**: 
+   1. If you prefer to use an Android Emulator instead of a physical device, follow the [steps here](https://developer.android.com/studio/run/emulator) to install and configure an Android Emulator.
+--- 
+
 ### Clone the Repository
 To get started, clone the repository to your local machine:
 
