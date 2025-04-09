@@ -40,7 +40,7 @@ Softrix is designed to simplify the trading experience for beginners by providin
 
 ---
 
-##  The Softrix Edge
+## <a name="why-softrix"></a> The Softrix Edge
 1. **Lack of Financial Literacy Among Beginners  📉**  
    New traders entering the financial world often feel overwhelmed, unsupported, and under-informed. Softrix is designed specifically to solve these core problems and empower users with smart tools, simple guidance, and strong community support. 
 
@@ -153,6 +153,7 @@ Ensure that your emulator or device is connected and running before executing th
 
 ---
 
-## Prototype
+## <a name="screenshots"></a>Prototype
 
-## Contributors
+## <a name="contributors"></a>Contributors
+
