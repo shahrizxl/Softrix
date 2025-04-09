@@ -1,7 +1,7 @@
 # Softrix
 
 <p align="center">
-  <img src="images/pic44.png" alt="Softrix Logo" width="300">
+  <img src="images/softrix.png" alt="Softrix Logo" width="300">
 </p>
 
 <h3 align="center">Softrix</h3>
