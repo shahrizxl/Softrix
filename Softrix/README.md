@@ -19,8 +19,8 @@
     <li><a href="#main-features">Main Features</a></li>
     <li><a href="#use-of-ai--technology">Use of AI & Technology</a></li>
     <li><a href="#impact--vision">Impact & Vision</a></li>
-    <li><a href="#future-plans">Future Plans</a></li>
     <li><a href="#tech-used">Technologies Used</a></li>
+    <li><a href="#future-plans">Future Plans</a></li>
     <li><a href="#how-to-run">How to Run</a></li>
     <li><a href="#screenshots">Screenshots</a></li>
     <li><a href="#contributors">Contributors</a></li>
