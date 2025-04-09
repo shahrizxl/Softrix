@@ -125,12 +125,28 @@ Softrix is designed to simplify the trading experience for beginners by providin
 ---
 
 ## How to Run
-
-### Clone
-Make sure you have Python & Flask installed. Then:
+Before running the Softrix Flutter app, make sure you have the following installed on your local machine: 
+- Flutter SDK: Follow the installation guide for Flutter here. 
+- Dart SDK: Dart comes bundled with Flutter, so no need to install it separately. 
+- Code Editor: Install any code editor, such as Visual Studio Code or Android Studio, with the Flutter plugin. 
+- Android Studio (for Android development) or Xcode (for iOS development) for building and running the app on your respective device or emulator.
+- 
+### Clone the Repository
+To get started, clone the repository to your local machine:
 
 ```bash
 git clone https://github.com/yourusername/softrix.git
 cd softrix
 ```
-### Setup
+### Install Dependencies
+Once you’ve cloned the repository, navigate to the project directory and run the following command to install the necessary dependencies:
+```bash
+flutter pub get
+```
+
+### Run the Application
+To run the app, you can use the following command:
+```bash
+flutter run
+```
+Ensure that your emulator or device is connected and running before executing the above command. Flutter will automatically detect the device and build the app accordingly.
