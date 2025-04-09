@@ -67,7 +67,7 @@ Softrix is designed to simplify the trading experience for beginners by providin
 
 | Flutter                          | Supabase                        | Gemini AI                      |
 | -------------------------------- | ------------------------------- | ------------------------------ |
-| <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="120"/> | <img src="[https://supabase.com/_next/image?url=%2Fbrand-assets%2Fsupabase-logo-icon.png&w=96&q=75](https://brandfetch.com/supabase.com?view=library&library=default&collection=logos&asset=idsfIhEopt&utm_source=https%253A%252F%252Fbrandfetch.com%252Fsupabase.com&utm_medium=copyAction&utm_campaign=brandPageReferral)" alt="Supabase" width="90"/> | <img src="[https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Google_Gemini_logo.svg/1024px-Gemini_logo.svg.png](https://logowik.com/content/uploads/images/google-ai-gemini91216.logowik.com.webp)" alt="Gemini AI" width="80"/> |
+| <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="120"/> | <img src="[https://supabase.com/_next/image?url=%2Fbrand-assets%2Fsupabase-logo-icon.png&w=96&q=75](https://brandfetch.com/supabase.com?view=library&library=default&collection=logos&asset=idsfIhEopt&utm_source=https%253A%252F%252Fbrandfetch.com%252Fsupabase.com&utm_medium=copyAction&utm_campaign=brandPageReferral)" alt="Supabase" width="90"/> | <img src="images/" alt="Gemini AI" width="80"/> |
 
 - **Flutter** – For building a smooth, cross-platform mobile experience.
 - **Supabase** – Open-source backend for authentication, database, and storage.
