@@ -125,8 +125,10 @@ class _SignupPageState extends State<SignupPage> {
             ],
           ),
         ),
+        width: double.infinity, // Take up the full width
+        height: double.infinity, // Take up the full height
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
           child: Form(
             key: _formKey,
             child: Column(
@@ -135,7 +137,7 @@ class _SignupPageState extends State<SignupPage> {
                 SizedBox(
                   height: 120,
                   width: 120,
-                  child: Image.asset('images/pic44.png'), // Replace with your image
+                  child: Image.asset('images/pic44.png'), // Replace with your image.
                 ),
                 SizedBox(height: 20),
                 // Welcome text
@@ -384,11 +386,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 SizedBox(height: 20),
                 // Image Placeholder: 300x150 - Could be a promotional banner or financial illustration
-                SizedBox(
-                  height: 150,
-                  width: 300,
-                  child: Image.asset('images/pic33.png'), // Replace with your image
-                ),
+
               ],
             ),
           ),
