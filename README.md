@@ -1,7 +1,7 @@
 # Softrix
 
 <p align="center">
-  <img src="images/softrix.png" alt="Softrix Logo" width="300">
+  <img src="Softrix/images/softrix.png" alt="Softrix Logo" width="300">
 </p>
 
 <h3 align="center">Softrix</h3>
@@ -12,7 +12,6 @@
 <details open="open">
   <summary><h1>Table of Contents</h1></summary>
   <ol>
-    <li><a href="#problem-statement">Problem Statement</a></li>
     <li><a href="#introduction-of-softrix">Introduction of Softrix</a></li>
     <li><a href="#why-softrix">The Softrix Edge</a></li>
     <li><a href="#sustainable-development-goals">Sustainable Development Goals</a></li>
@@ -26,12 +25,6 @@
     <li><a href="#contributors">Contributors</a></li>
   </ol>
 </details>
-
----
-
-## Problem Statement
-
-Paragraph....
 
 ---
 
@@ -107,7 +100,7 @@ Softrix is designed to simplify the trading experience for beginners by providin
 
 | Flutter                          | Supabase                        | Gemini AI                      |
 | -------------------------------- | ------------------------------- | ------------------------------ |
-| <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="300"/> | <img src="images/idsfIhEopt_logos.png" alt="Supabase" width="350"/> | <img src="images/Google-Gemini-Logo-Transparent.png" alt="Gemini AI" width="350"/> |
+| <img src="https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png" alt="Flutter" width="300"/> | <img src="Softrix/images/idsfIhEopt_logos.png" alt="Supabase" width="350"/> | <img src="Softrix/images/Google-Gemini-Logo-Transparent.png" alt="Gemini AI" width="350"/> |
 
 - **Flutter** – For building a smooth, cross-platform mobile experience.
 - **Supabase** – Open-source backend for authentication, database, and storage.
@@ -166,19 +159,6 @@ Ensure that your emulator or device is connected and running before executing th
 ---
 
 ## <a name="prototype"></a>Prototype
-
-### Screenshots
-Splash Screen | Onboarding | AI Chat | Trading Academy  
-:--:|:--:|:--:|:--:  
-<img src="https://your-image-link.com/splash.png" width="200px"/> | <img src="https://your-image-link.com/onboarding.png" width="200px"/> | <img src="https://your-image-link.com/aichat.png" width="200px"/> | <img src="https://your-image-link.com/academy.png" width="200px"/>
-
-Community Chat | E-Wallet | Financial News | Sign Up  
-:--:|:--:|:--:|:--:  
-<img src="https://your-image-link.com/communitychat.png" width="200px"/> | <img src="https://your-image-link.com/ewallet.png" width="200px"/> | <img src="https://your-image-link.com/news.png" width="200px"/> | <img src="https://your-image-link.com/signup.png" width="200px"/>
-
-Community Chat | E-Wallet | Financial News | Sign Up  
-:--:|:--:|:--:|:--:  
-<img src="https://your-image-link.com/communitychat.png" width="200px"/> | <img src="https://your-image-link.com/ewallet.png" width="200px"/> | <img src="https://your-image-link.com/news.png" width="200px"/> | <img src="https://your-image-link.com/signup.png" width="200px"/>
 
 ### Demo Video
 Check out the demo video showcasing Softrix in action:
